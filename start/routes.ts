@@ -20,4 +20,8 @@
 
 import Route from '@ioc:Adonis/Core/Route'
 
-Route.get('/', 'MedicosController.index')
+Route.get('/', async () => {
+  return { hello: 'world' }
+})
+
+Route.resource('/medicos', 'MedicosController').apiOnly()
