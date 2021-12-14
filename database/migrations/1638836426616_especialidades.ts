@@ -1,28 +1,28 @@
 import BaseSchema from '@ioc:Adonis/Lucid/Schema'
 
-export default class Medicos extends BaseSchema {
-  protected tableName = 'medicos'
+export default class Especialidades extends BaseSchema {
+  protected tableName = 'especialidades'
 
   public async up() {
-    this.schema.table(this.tableName, (table) => {
+    this.schema.createTable(this.tableName, (table) => {
+      table.increments('id')
       table
-        .enu('specialities', [
+        .enum('escolhas', [
           'Alergologia',
           'Angiologia',
           'Buco maxilo',
-          'Cardiologia clínca',
+          'Cardiologia clínica',
           'Cardiologia infantil',
           'Cirurgia cabeça e pescoço',
           'Cirurgia cardíaca',
           'Cirurgia de tórax',
         ])
         .notNullable()
+        .unique()
     })
   }
 
   public async down() {
-    this.schema.table(this.tableName, (table) => {
-      table.dropColumn('specialities')
-    })
+    this.schema.dropTable(this.tableName)
   }
 }

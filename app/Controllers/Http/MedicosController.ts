@@ -1,5 +1,6 @@
 import { HttpContextContract } from '@ioc:Adonis/Core/HttpContext'
 import Medico from 'App/Models/Medico'
+import { StoreValidator, UpdateValidator } from 'App/Validators/Medico'
 
 export default class MedicosController {
   public async index({}: HttpContextContract) {
@@ -9,7 +10,8 @@ export default class MedicosController {
   }
 
   public async store({ request }: HttpContextContract) {
-    const data = request.only(['name', 'CRM', 'CEP', 'fixo', 'cell'])
+    // const data = request.only(['nome', 'CRM', 'CEP', 'fixo', 'cell', 'especialidades'])
+    const data = await request.validate(StoreValidator)
     const medico = await Medico.create(data)
     return medico
   }
@@ -25,7 +27,7 @@ export default class MedicosController {
 
   public async update({ params, request }: HttpContextContract) {
     const medico = await Medico.findOrFail(params.id)
-    const data = request.only(['name', 'CRM', 'CEP', 'fixo', 'cell'])
+    const data = await request.validate(UpdateValidator)
 
     medico.merge(data)
     await medico.save()
@@ -35,9 +37,9 @@ export default class MedicosController {
 
   public async destroy({ params }: HttpContextContract) {
     const medico = await Medico.findOrFail(params.id)
-    const name = medico.name
+    const nome = medico.nome
 
     await medico.delete()
-    return { deleted: `${params.id} - ${name}` }
+    return { deleted: `${params.id} - ${nome}` }
   }
 }

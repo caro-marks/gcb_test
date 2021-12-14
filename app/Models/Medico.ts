@@ -1,24 +1,28 @@
 import { DateTime } from 'luxon'
-import { BaseModel, column } from '@ioc:Adonis/Lucid/Orm'
+import { BaseModel, column, hasMany, HasMany } from '@ioc:Adonis/Lucid/Orm'
+import Especialidade from './Especialidade'
 
 export default class Medico extends BaseModel {
   @column({ isPrimary: true })
   public id: number
 
   @column()
-  public name: string
+  public nome: string
 
   @column()
-  public CRM: number
+  public CRM: string
 
   @column()
-  public CEP: number
+  public CEP: string
 
   @column()
-  public fixo: number
+  public fixo: string
 
-  @column({ columnName: 'celular' })
-  public cell: number
+  @column()
+  public celular: string
+
+  @hasMany(() => Especialidade, {})
+  public especialidades: HasMany<typeof Especialidade>
 
   @column.dateTime({ autoCreate: true })
   public createdAt: DateTime
